@@ -1,0 +1,414 @@
+body{
+background-color:#EBEBEB ;
+height:100%;
+margin:0 !important;
+}
+ * {
+outline:1px,red,solid;
+}
+
+
+
+.app-wrapper {
+  min-height: 100vh;       /* poore screen ki height */
+  display: flex;
+  flex-direction: column;
+}
+
+.main-content {
+  flex: 1;   /* ye footer ko neeche dhakel dega */
+}
+
+
+
+.shoping {
+width:30px;
+heigth:18px;
+}
+
+.searchbar {
+width:155px;
+height:25px;
+}
+
+.icons_div {
+gap:0;
+}
+.link{
+color:black;
+text-decoration:none;
+}
+
+@media(min-width:768px){
+.navbar{
+margin:auto;
+font-size:24px !important;
+width:100%;
+}
+.searchbar {
+width:440px;
+height:45px !important;
+border:1px,gray,solid !important;
+}
+}
+
+@media(min-width:768px){
+.icons_div{
+width:250px;
+gap:28px !important;
+}
+.invisible{
+visibility:visible !important;
+}
+.navbar h2{
+font-size:45px !important;
+padding-left:24px !important;
+}
+}
+
+select{
+  border: none;
+  background-color: white;
+}
+
+.top-compo{
+  max-width: 25rem;
+  max-height:50px;
+}
+
+main-div{
+  background-color: white;
+}
+
+.select_category{
+  border: none;
+  background-color: white;
+  margin-bottom: 8px;
+  font-weight: 900;
+}
+
+.best-product div{
+min-width: 200px;
+}
+
+.main-box{
+  background-color: white;
+}
+
+.footer{
+  background: #42445A;
+}
+
+
+
+/* category div */
+
+.dropdown {
+background-color:white !important;
+}
+
+
+.cate_option {
+}
+
+.cate_div {
+  position: static !important;   /* dropdown container ke bahar dikh sake */
+}
+
+.show-on-top {
+  z-index: 2000;  /* dropdown ko upar laane ke liye */
+}
+@media(min-width:768px){
+.cate_div .dropdown .dropdown-menu{
+width:500px !important;
+}
+}
+
+
+
+/*category page by subcategory*/
+.card img {
+height:230px;
+ }
+.text-ellip {
+  white-space: nowrap;        
+  overflow: hidden;           
+  text-overflow: ellipsis;   
+  display: block;            
+  width:9rem;               
+}
+
+.subcate_div p{
+margin-block:0;
+font-size:8px !important;
+}
+.subcate_div{
+margin-block:4px;
+}
+@media(min-width:768px){
+.card img{
+height:350px !important;
+}
+.subcate_div p{
+font-size:15px !important;
+}
+}
+
+/* top section*/
+
+
+.top_section_div {
+min-width:5.43rem;
+}
+.top_section_div p{
+margin-block:0 !important;
+padding-block:0 !important;
+font-size:10px !important;
+padding-left:6px;
+}
+
+.top_section_div img{
+height:6.7rem;
+}
+
+@media (min-width: 1024px) {
+  .to_section {
+    padding: 1rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .top_section_div {
+    min-width:10rem;
+  }
+  .top_section_div img{
+    height:11.5rem !important;
+  }
+.top_section_div p{
+font-size:16px !important;
+}
+.top_section{
+gap:30px !important;
+}
+.text-ellipsis{
+width:9rem !important;
+}
+.top_main_div{
+margin-bottom:50px !important;
+}
+.top_main_div .bg-white h6{
+font-size:25px !important;
+margin-left:8px !important;
+}
+
+.top_main_div div{
+margin-bottom:30px !important;
+}
+}
+
+/* Desktop (1024px se upar) */
+@media (min-width: 1024px) {
+  .top_section_div {
+    min-width:10rem;
+    height:15rem;
+  }
+
+}
+
+
+.text-ellipsis {
+  white-space: nowrap;        /* ek line me rakhega */
+  overflow: hidden;           /* extra text hide karega */
+  text-overflow: ellipsis;    /* ... dikhayega */
+  display: block;             /* inline pe ellipsis kaam nahi karta */
+  width:5rem;               /* width dena zaroori hai */
+}
+
+
+/* detail page*/
+
+.img_details {
+  height: 400px;
+  object-fit: cover;
+}
+
+@media(min-width:768px){
+.para{
+font-size:20px;
+}
+.img_details{
+height:auto !important;
+}
+}
+.bot_div{
+min-width:5.93rem;
+}
+.bot_div img{
+height:7.96rem;
+object-fit:cover;
+}
+.bot_div p {
+font-size:10px !important;
+margin-block:0 !important;
+padding-block:0 !important;
+}
+@media(min-width:768px){
+.bot_div img{
+height:17.7rem !important;
+object-fit:cover !important;
+}
+.bot_div{
+min-width:13rem !important;
+}
+.bot_main_div {
+gap:1rem !important;
+}
+.bot_div p {
+font-size:20px !important;
+}
+.similar {
+font-size:2rem !important;
+}
+}
+@media(min-width:768px){
+.place_order div,button{
+height:65px !important;
+font-size:30px !important;
+}
+.dropdown a{
+font-size:30px !important;
+}
+.dropdown-menu li{
+height:60px !important;
+width:75px !important;
+font-size:30px !important;
+}
+}
+
+
+/* cart div */
+
+.cart_div {
+height:180
+}
+
+.cart_image {
+height:50px;
+width:40px;
+
+}
+
+.p_name {
+margin-bottom:0;
+font-size:12px;
+}
+
+.p_price {
+margin-top:0;
+font-size:12px;
+}
+
+.order-btn {
+font-size:10px;
+text-align:center;
+padding:1px
+}
+
+
+@media (min-width:768px){
+.cart_image {
+height:80px;
+width:65px;
+}
+.p_name , .p_price {
+font-size:25px;
+}
+.order-btn {
+font-size:15px;
+}
+}
+
+/* login page */ 
+.regis_h1{
+padding-left:12px !important;
+}
+.regis_btn{
+margin-left:12px !important;
+margin-top:30px !important;
+}
+
+.log_row ,.register_row {
+margin-right:0 !important;
+margin-top:8px !important;
+margin-left:0 !important;
+}
+@media(min-width:768px){
+.log_row .log_col input,label{
+font-size:25px !important;
+}
+.log_btn{
+width:120px !important;
+height:60px !important;
+font-size:25px !important;
+margin-left:18px !important;
+}
+}
+
+/* register page styles */
+@media(min-width:768px){
+.register_row .regis_col input{
+font-size:20px !important;
+}
+.regis_btn{
+width:120px !important;
+height:60px !important;
+font-size:25px !important;
+}
+}
+
+/* footer      */
+
+.footer .col p {
+font-size:8px;
+}
+.footer .icons i {
+font-size:8px;
+}
+@media (min-width:768px){
+.footer .col p {
+font-size:15px;
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

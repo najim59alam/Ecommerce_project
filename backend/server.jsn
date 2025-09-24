@@ -1,0 +1,182 @@
+const express = require('express');
+const cors = require('cors');
+const mysql =require("mysql2")
+const passport=require("passport")
+const session=require("express-session")
+const LocalStrategy=require("passport-local").Strategy;
+const bcrypt=require("bcryptjs")
+const app = express();
+const multer = require("multer");
+
+app.use(cors({
+  origin: "http://localhost:5173",   // frontend ka port
+ credentials:true
+}));
+
+app.use(express.json());
+app.use("/uploads", express.static("uploads")); // image ko serve karne ke liye
+app.use(express.urlencoded({ extended: true }));
+
+const db=mysql.createConnection({
+host:"localhost",
+user:"root",
+database:"ecommerce"
+
+})
+
+db.connect((err) => {
+  if (err) {
+    console.error("Database connection failed:", err);
+    process.exit(1); // server band ho jaye agar DB hi connect na ho
+  }
+  console.log("Database connected successfully");
+});
+
+
+// Multer storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/"); // save in uploads folder
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname); // unique name
+  }
+});
+
+const upload = multer({ storage: storage });
+
+app.use(session({
+  secret: 'keyboard cat',
+  resave: false,
+  saveUninitialized: true
+}))
+
+app.use(passport.initialize());
+app.use(passport.session());
+
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next(); // user login hai, aage jane do
+  }
+  res.status(401).json({ message: "Not logged in" });
+}
+
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.json({ message: "Already logged in" });
+  }
+  next();
+}
+
+
+passport.use(new LocalStrategy({usernameField:"email"},(email,password,done)=>{
+const sql=`select * from users where email=?`
+db.query(sql,[email],(err,result)=>{
+if(err) return done(err);
+if(result.length===0) return done(null,false,{message:"user not registered"})
+const user=result[0];
+bcrypt.compare(password,user.password,(err,match)=>{
+if(err) return done(err)
+if(!match) return done(null,false,{message:"password not correct"})
+delete user.password
+console.log(user)
+return done(null,user)
+})
+})
+}))
+
+passport.serializeUser((user,done)=> done(null,user.user_id))
+passport.deserializeUser((id,done)=>{
+db.query("select * from users where user_id=?",[id],(err,result)=>{
+if(err) return done(err);
+console.log(`req.session ${result}`)
+return done(null,result[0])
+})
+})
+
+app.get("/", (req, res) => {
+    res.send("E-commerce backend is running...");
+});
+
+app.post("/register" ,(req,res)=>{
+const {name,email,password,phone,address,role}=req.body;
+bcrypt.hash(password,10,(err,hash)=> {
+let sql=`insert into users (name,email,password,phone,role) values (?,?,?,?,?)`
+db.query(sql,[name,email,hash,phone,role],(err,result)=>{
+console.log("insert successfull")
+res.status(200).json({message:"successful"})
+})
+})
+})
+
+app.get("/categories",(req,res)=>{
+let sql="select * from categories"
+db.query(sql,(err,result)=>{
+if(err) return res.status(500).send(err);
+res.json(result)
+})
+})
+
+app.get("/subcategory/:categoryId",(req,res)=>{
+const {categoryId}=req.params;
+let sql="select * from subcategories where category_id=?" 
+db.query(sql,[categoryId],(err,result)=>{
+if(err) return  res.status(500).json(err)
+res.json(result)
+})
+})
+
+app.post("/product", upload.array("file",5), (req, res) => {
+  const { name, description, price, stock, category_id, subcategory_id} = req.body;
+  const image_url = req.files.map(file => `/uploads/${file.filename}`);
+  
+  let sql = `INSERT INTO products 
+    (name, description, price, stock, category_id, image_url,subcategory_id) 
+    VALUES (?,?,?,?,?,?,?)`;
+console.log("first")  
+  db.query(sql, [name, description, price, stock, category_id, JSON.stringify(image_url),subcategory_id], (err, result) => {
+    if (err) {
+console.log("second")
+console.error("SQL Error:", err);
+return res.status(500).send(err);}
+console.log("nice")
+    res.json({ message: "Product added", productId: result.insertId });
+  });
+});
+
+app.get("/products", (req, res) => {
+  db.query("SELECT * FROM products", (err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json(result);
+  });
+});
+
+
+app.get("/products/:subcategoryId", (req, res) => {
+const {subcategoryId}=req.params;
+let sql= "SELECT * FROM products where subcategory_id=?";
+  db.query(sql,[subcategoryId],(err, result) => {
+    if (err) return res.status(500).send(err);
+    res.json(result);
+  });
+});
+
+
+app.post("/login", checkNotAuthenticated, (req, res, next) => {
+  passport.authenticate("local", (err, user, info) => {
+    if (err) return next(err);
+    if (!user) return res.status(400).json({ message: info.message });
+
+    req.logIn(user, (err) => {
+      if (err) return next(err);
+      return res.json({ message: "Login successful" });
+    });
+  })(req, res, next);
+});
+
+
+const PORT = 5000;
+app.listen(PORT, () => {
+    console.log(`Server running on port ${PORT}`);
+});
+
