@@ -21,7 +21,7 @@ app.use(express.urlencoded({ extended: true }));
 const db=mysql.createConnection({
 host:process.env.MYSQLHOST,
 user:process.env.MYSQLUSER,
-database:process.env.MYSQLDATABASE
+database:process.env.MYSQLNAME
 })
 
 db.connect((err) => {
