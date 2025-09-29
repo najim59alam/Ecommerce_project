@@ -19,9 +19,9 @@ app.use("/uploads", express.static("uploads")); // image ko serve karne ke liye
 app.use(express.urlencoded({ extended: true }));
 
 const db=mysql.createConnection({
-host:process.env.DB_HOST,
-user:process.env.DB_USER,
-database:process.env.DB_NAME
+host:process.env.MYSQLHOST,
+user:process.env.MYSQLUSER,
+database:process.env.MYSQLDATABASE
 })
 
 db.connect((err) => {
